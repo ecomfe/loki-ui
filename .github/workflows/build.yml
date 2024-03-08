@@ -1,0 +1,38 @@
+name: Node.js CI Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies with pnpm
+        run: pnpm install --frozen-lockfile
+
+      - name: Build docs with pnpm
+        run: pnpm docs:build
+
+      - name: Archive built docs into tarball
+        run: cat docs-dist/index.html && tar -cvf output2.tar --touch docs-dist
+
+      - name: Upload archived output as artifact
+        if: success() # Only run this step if the previous steps were successful
+        uses: actions/upload-artifact@v3
+        with:
+          name: output2
+          path: output2.tar

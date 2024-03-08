@@ -1,0 +1,27 @@
+name: Loki-ui NPM Publish
+
+on:
+  workflow_dispatch: # 允许手动触发工作流
+
+jobs:
+  npm_publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+        registry-url: 'https://registry.npmjs.org/'
+
+    - name: Install pnpm
+      run: npm install -g pnpm
+
+    - name: Install dependencies with pnpm
+      run: pnpm install --frozen-lockfile
+
+    - name: Publish to NPM
+      run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

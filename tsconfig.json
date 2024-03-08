@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "strict": false,
+        "declaration": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "jsx": "react",
+        "baseUrl": "./",
+        "noEmitOnError": false,
+        "paths": {
+            "@@/*": [".dumi/tmp/*"],
+            "@/*": ["./*"],
+            "loki-ui/*": ["src/*", "*"],
+            "loki-ui": ["src/index",]
+        }
+    },
+    "include": ["types", ".dumirc.ts", "src/**/*", "global.d.ts", "demo/**/*"],
+}

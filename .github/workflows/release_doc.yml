@@ -1,0 +1,28 @@
+name: Release Doc CI Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Download Artifact
+        uses: dawidd6/action-download-artifact@v3
+        with:
+          name: output2
+          check_artifacts: true
+          search_artifacts: true
+          workflow: build.yml
+
+      - name: Extract the archived output
+        run: tar -xvf output2.tar && pwd && ls -l ./docs-dist && cat ./docs-dist/index.html
+
+      - name: Deploy 🚀
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs-dist
